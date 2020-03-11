@@ -1,21 +1,60 @@
 import React from "react"
-import { Link } from "gatsby"
+import { Link, graphql } from "gatsby"
 
 import Layout from "../components/layout"
-import Image from "../components/image"
 import SEO from "../components/seo"
 
-const IndexPage = () => (
+export default ({ data }) => (
   <Layout>
     <SEO title="Home" />
-    <h1>Hi people</h1>
-    <p>Welcome to your new Gatsby site.</p>
-    <p>Now go build something great.</p>
-    <div style={{ maxWidth: `300px`, marginBottom: `1.45rem` }}>
-      <Image />
-    </div>
-    <Link to="/page-2/">Go to page 2</Link>
+
+    <p>
+      {data.allWordpressPost.totalCount}{" "}
+      {data.allWordpressPost.totalCount > 1 ? `Posts` : `Post`}
+    </p>
+
+    <ul style={{ listStyle: `none`, marginLeft: `0` }}>
+      {data.allWordpressPost.edges.map(({ node }) => (
+        <li>
+          <h2>
+            <Link
+              to={node.slug}
+              dangerouslySetInnerHTML={{
+                __html: node.title,
+              }}
+            />
+          </h2>
+
+          <div
+            dangerouslySetInnerHTML={{
+              __html: node.excerpt,
+            }}
+          />
+
+          <time
+            dateTime={node.date}
+            dangerouslySetInnerHTML={{
+              __html: new Date(node.date).toISOString().slice(0, 10),
+            }}
+          />
+        </li>
+      ))}
+    </ul>
   </Layout>
 )
 
-export default IndexPage
+export const pageQuery = graphql`
+  query {
+    allWordpressPost(sort: { fields: [date] }) {
+      edges {
+        node {
+          title
+          excerpt
+          date
+          slug
+        }
+      }
+      totalCount
+    }
+  }
+`
