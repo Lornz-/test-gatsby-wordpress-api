@@ -1,6 +1,6 @@
 module.exports = {
   siteMetadata: {
-    title: `Gatsby Default Starter`,
+    title: `My awesome blog`,
     description: `Kick off your next, great Gatsby project with this default starter. This barebones starter ships with the main Gatsby configuration files you might need.`,
     author: `@gatsbyjs`,
   },
@@ -11,6 +11,22 @@ module.exports = {
       options: {
         name: `images`,
         path: `${__dirname}/src/images`,
+      },
+    },
+    {
+      resolve: `gatsby-source-wordpress`,
+      options: {
+        baseUrl: `wpgatsby.local`,
+        protocol: `http`,
+        hostingWPCOM: false,
+        useAcf: true,
+        includedRoutes: [
+          "**/pages",
+          "**/posts",
+          "**/tags",
+          "**/categories",
+          "**/users",
+        ],
       },
     },
     `gatsby-transformer-sharp`,
