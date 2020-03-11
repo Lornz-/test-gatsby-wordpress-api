@@ -1,3 +1,5 @@
+require("dotenv").config()
+
 module.exports = {
   siteMetadata: {
     title: `My awesome blog`,
@@ -16,10 +18,10 @@ module.exports = {
     {
       resolve: `gatsby-source-wordpress`,
       options: {
-        baseUrl: `wpgatsby.local`,
+        baseUrl: process.env.WP_API_BASE_URL,
         protocol: `http`,
         hostingWPCOM: false,
-        useAcf: true,
+        useAcf: false,
         includedRoutes: [
           "**/pages",
           "**/posts",
